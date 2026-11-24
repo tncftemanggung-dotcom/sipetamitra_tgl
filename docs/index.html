@@ -3345,7 +3345,12 @@
         if (mobileBadge) mobileBadge.textContent = currentUser.role;
 
         var greetingName = document.getElementById('berandaGreetingName');
-        if (greetingName) greetingName.textContent = currentUser.fullname;
+        if (greetingName) {
+          var isBapakRole = currentUser.role === 'MANAGER' || currentUser.role === 'TRADER';
+          var rawName = String(currentUser.fullname || '').trim();
+          var hasBapak = /^bapak\s+/i.test(rawName);
+          greetingName.textContent = (isBapakRole && !hasBapak) ? ('Bapak ' + rawName) : rawName;
+        }
         var greetingRole = document.getElementById('berandaGreetingRole');
         if (greetingRole) greetingRole.textContent = 'Role: ' + currentUser.role;
 
