@@ -1,5 +1,5 @@
 /* Service Worker SIPETA MITRA — Versi di-bump setiap update index.html / pwa-config.js */
-const VERSION = 'v4.8.4'; // Diubah agar browser/HP otomatis menghapus cache versi lama
+const VERSION = 'v5.4.2'; // Diubah agar browser/HP otomatis menghapus cache versi lama
 const SHELL_CACHE = 'app-shell-' + VERSION;
 const RUNTIME_CACHE = 'runtime-' + VERSION;
 const PRECACHE = [
@@ -38,6 +38,19 @@ self.addEventListener('fetch', (event) => {
 
   // Jangan pernah mencegat panggilan ke Apps Script / Google: ditangani oleh gas-bridge.js
   if (/(^|\.)(google\.com|googleusercontent\.com)$/.test(url.hostname)) return;
+
+  // API Cuaca Open-Meteo (Beranda): network-first agar cuaca selalu baru saat online, fallback cache saat offline
+  if (url.hostname === 'api.open-meteo.com') {
+    event.respondWith(
+      caches.open(RUNTIME_CACHE).then((cache) =>
+        fetch(req).then((res) => {
+          if (res && res.ok) cache.put(req, res.clone());
+          return res;
+        }).catch(() => cache.match(req).then((hit) => hit || Response.error()))
+      )
+    );
+    return;
+  }
 
   // Same-origin: app shell, cache first (nama cache berubah di setiap build)
   if (url.origin === self.location.origin) {

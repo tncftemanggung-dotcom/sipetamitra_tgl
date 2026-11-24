@@ -1,15 +1,17 @@
-/* Konfigurasi PWA SIPETA MITRA v4.8.4 — sinkron dengan Code.gs & api.gs */
+/* Konfigurasi PWA SIPETA MITRA v5.0 — sinkron dengan Code.gs & api.gs */
 window.PWA_CONFIG = {
   // Apps Script Web App URL (berakhir dengan /exec)
-  endpoint: "https://script.google.com/macros/s/AKfycbxMt5b-AvFI29amFHmnkQxsC4gZNTxN6IQ3MA5CErOhVNYmS91VCSqaFftDBmU1NLkPVQ/exec",
+  endpoint: "https://script.google.com/macros/s/AKfycbzn5gSAderWaS-IsIF0KGBz1GY7Oqg59IFd7fJyWqy1IzI_GONmBC0i3c1586WyGIjN/exec",
 
   // Sama dengan Script Property PWA_TOKEN di Apps Script (opsional, kosongkan jika tidak dipakai)
   token: '',
 
-  // Timeout dinaikkan ke 60 detik agar upload foto Base64 ke Google Drive tidak mudah terputus di jaringan lambat
+  // Timeout 60 detik agar upload foto Base64 ke Google Drive tidak mudah terputus di jaringan lambat
   timeoutMs: 60000,
 
-  // Fungsi WRITE yang masuk antrean offline (IndexedDB outbox) jika tidak ada sinyal
+  // Fungsi WRITE lapangan yang masuk antrean offline (IndexedDB outbox) jika tidak ada sinyal.
+  // Tugas ADMIN (saveUser, saveTrader, savePenugasanPic, saveJadwalTanam, saveInfoTambahan)
+  // dan updateUserProfilePhoto sengaja online-only.
   queueable: [
     "savePetani",
     "saveLahan",
@@ -23,7 +25,7 @@ window.PWA_CONFIG = {
     "savePembibitan"
   ],
 
-  // Fungsi READ yang di-cache untuk tampilan saat offline
+  // Fungsi READ yang di-cache untuk tampilan saat offline (termasuk jadwalTanam & infoTambahan)
   cacheable: ["getAppData"],
 
   // Nilai balikan tiruan saat data disimpan ke antrean offline agar UI tetap berjalan mulus

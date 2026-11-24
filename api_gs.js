@@ -1,9 +1,10 @@
 // api.gs — Router POST untuk jembatan PWA (gas-bridge.js) ke Google Apps Script
-// SIPETA MITRA v4.8.4 | Pastikan file ini berada di project Apps Script yang sama dengan Code.gs
+// SIPETA MITRA v5.4.2 | Pastikan file ini berada di project Apps Script yang sama dengan Code.gs
 
 /**
- * Daftar fungsi backend yang diizinkan dipanggil oleh PWA.
- * Fungsi internal (setupDatabase, hashPassword, uploadBase64ToDrive, dll.) sengaja tidak dimasukkan demi keamanan.
+ * Daftar 21 fungsi backend yang diizinkan dipanggil oleh PWA.
+ * Fungsi internal & darurat (setupDatabase, hashPassword, uploadBase64ToDrive,
+ * resetPasswordAdmin, dll.) sengaja TIDAK dimasukkan demi keamanan.
  */
 function getApiHandlers_() {
   return {
@@ -11,7 +12,7 @@ function getApiHandlers_() {
     loginUser: loginUser,
     destroySession: destroySession,
 
-    // Read Data Utama
+    // Read Data Utama (termasuk jadwalTanam & infoTambahan)
     getAppData: getAppData,
 
     // Registrasi (Koordinator, Petani, Lahan) & Ubah Status
@@ -25,6 +26,7 @@ function getApiHandlers_() {
 
     // Stok Benih, Serah Terima & Distribusi Benih
     saveStokOpname: saveStokOpname,
+    deleteStokOpname: deleteStokOpname,
     saveSerahTerima: saveSerahTerima,
     saveDistribusiBenih: saveDistribusiBenih,
 
@@ -32,13 +34,16 @@ function getApiHandlers_() {
     saveSebarBenih: saveSebarBenih,
     savePembibitan: savePembibitan,
 
-    // Profil Pengguna
+    // Profil Pengguna (Foto & Spesimen TTD)
     updateUserProfilePhoto: updateUserProfilePhoto,
+    updateUserSignature: updateUserSignature,
 
-    // Administrator (Pengguna, Trader, Penugasan PIC)
+    // Administrator (Pengguna, Trader, Penugasan PIC, Jadwal Tanam, Informasi Tambahan)
     saveUser: saveUser,
     saveTrader: saveTrader,
-    savePenugasanPic: savePenugasanPic
+    savePenugasanPic: savePenugasanPic,
+    saveJadwalTanam: saveJadwalTanam,
+    saveInfoTambahan: saveInfoTambahan
   };
 }
 
